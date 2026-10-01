@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 222 36% 6%;
+  --foreground: 210 40% 98%;
+  --card: 220 30% 12%;
+  --card-foreground: 210 40% 98%;
+  --popover: 220 30% 10%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 221 83% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 20% 18%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 220 20% 16%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 190 95% 42%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 215 25% 20%;
+  --input: 215 25% 20%;
+  --ring: 221 83% 53%;
+  --radius: 0.6rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  margin: 0;
+  background-color: #0A0D14;
+  color: #F8FAFC;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-heading { font-family: 'Barlow Condensed', sans-serif; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+.font-sans { font-family: 'Inter', sans-serif; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0A0D14; }
+::-webkit-scrollbar-thumb { background: #243049; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #2f3f5e; }
+
+::selection { background: rgba(37, 99, 235, 0.4); color: #fff; }
+
+.leaflet-container { background: #0A0D14; font-family: 'JetBrains Mono', monospace; }
+.leaflet-tile { filter: brightness(0.6) invert(1) contrast(0.9) hue-rotate(200deg) saturate(0.4) brightness(0.9); }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #182030; color: #F8FAFC; border: 1px solid rgba(255,255,255,0.1); }
+.leaflet-bar a { background: #182030; color: #F8FAFC; border-color: #243049; }
+.leaflet-bar a:hover { background: #243049; }
+
+@keyframes ping-ring {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.pulse-marker { animation: ping-ring 1.8s cubic-bezier(0,0,0.2,1) infinite; }
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: slide-up 0.35s ease-out forwards; }
+
+@layer base {
+  [data-debug-wrapper="true"] { display: contents !important; }
+}

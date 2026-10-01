@@ -1,0 +1,97 @@
+{
+  "project_title": "AI-Driven Disaster Management and Rescue System (Computer Networks PBL)",
+  "context_type": "Data-dense command-center style dashboard & crisis monitoring system",
+  "theme": "Dark Tactical Command (Obsidian / Slate Navy base with High-Contrast Tactical Accents)",
+  "typography": {
+    "heading_font": "Barlow Condensed, sans-serif",
+    "body_font": "Inter, sans-serif",
+    "mono_font": "JetBrains Mono, monospace",
+    "hierarchy": {
+      "h1": "text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase tracking-wider font-heading",
+      "h2": "text-2xl sm:text-3xl font-bold uppercase tracking-wide font-heading",
+      "h3": "text-lg sm:text-xl font-semibold tracking-wide font-heading",
+      "h4": "text-base font-medium font-heading",
+      "body": "text-sm text-slate-300 font-sans leading-relaxed",
+      "small_label": "text-xs font-mono uppercase tracking-widest text-slate-400"
+    }
+  },
+  "colors": {
+    "background_primary": "#0A0D14",
+    "background_secondary": "#121824",
+    "background_card": "#182030",
+    "border_subtle": "rgba(255, 255, 255, 0.08)",
+    "border_active": "rgba(59, 130, 246, 0.4)",
+    "text_primary": "#F8FAFC",
+    "text_secondary": "#94A3B8",
+    "status_critical": "#EF4444",
+    "status_warning": "#F59E0B",
+    "status_safe": "#10B981",
+    "accent_primary": "#2563EB",
+    "accent_cyan": "#06B6D4",
+    "accent_amber": "#D97706",
+    "tactical_glow": "rgba(37, 99, 235, 0.2)"
+  },
+  "layout_and_grids": {
+    "dashboard_mode": "High Density Tactical Command Grid (Mode B)",
+    "grid_structure": "grid-cols-1 md:grid-cols-12 gap-4 lg:gap-6",
+    "paddings": "p-4 sm:p-6 lg:p-8",
+    "containers": "bg-[#121824]/90 backdrop-blur-md border border-white/10 rounded-lg p-5 shadow-2xl overflow-hidden relative"
+  },
+  "motion_and_interactions": {
+    "hover_states": "transition-all duration-200 hover:border-blue-500/50 hover:bg-[#1a2336]",
+    "active_states": "active:scale-[0.98]",
+    "animations": "framer-motion staggered entrance for list items and live feed alerts",
+    "pulse_effects": "animate-pulse for active critical alerts and live IoT sensor status"
+  },
+  "network_and_security_pbl_features": {
+    "pbl_badges": "Include explicit indicators for Computer Networks & Cybersecurity concepts (e.g., MQTT/WebSocket Feed Latency, End-to-End Encryption RSA-2048, Mesh Node Topology, DDoS Mitigation Status, Edge-Cloud Synchronization)",
+    "role_based_access": "Support Admin (Command Control), Rescue Team (Tactical Dispatch), Citizen (Victim SOS Portal) mode switching"
+  },
+  "image_urls": [
+    {
+      "url": "https://images.unsplash.com/photo-1790700552918-dc279338ac26?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODR8MHwxfHNlYXJjaHwxfHxkaXNhc3RlciUyMHJlc2N1ZSUyMG9wZXJhdGlvbiUyMGVtZXJnZW5jeSUyMGNvbW1hbmQlMjBjZW50ZXJ8ZW58MHx8fHwxNzkwODU0NTc2fDA&ixlib=rb-4.1.0&q=85",
+      "category": "command_center",
+      "description": "Mobile command center seats with monitors displaying digital maps"
+    },
+    {
+      "url": "https://images.pexels.com/photos/32716598/pexels-photo-32716598.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "category": "field_operation",
+      "description": "Aerial view of rescue response vehicles and tactical staging area"
+    },
+    {
+      "url": "https://images.pexels.com/photos/14776562/pexels-photo-14776562.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "category": "rescue_mission",
+      "description": "Firefighters during emergency building rescue operation"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1714255288526-cc155b548aac?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHxfHxzYXRlbGxpdGUlMjBtYXAlMjByYWRhciUyMG1vbml0b3Jpbmd8ZW58MHx8fHwxNzkwODU0NTgzfDA&ixlib=rb-4.1.0&q=85",
+      "category": "satellite_radar",
+      "description": "Satellite dish platform representing space-ground telemetry and network node"
+    }
+  ],
+  "accessibility_and_testing": {
+    "contrast_policy": "WCAG AA high-contrast readable dark theme with clear status icons and high contrast labels",
+    "test_id_convention": "All interactive elements, buttons, maps, inputs, tabs, modal actions, and status indicators MUST include explicit kebab-case data-testid attributes (e.g., data-testid='sos-report-button', data-testid='incident-filter-dropdown', data-testid='iot-sensor-temp-card')",
+    "required_test_ids": [
+      "navbar-brand-logo",
+      "role-switcher-tabs",
+      "incident-map-canvas",
+      "active-incidents-counter",
+      "iot-sensor-feed-list",
+      "ai-prediction-card",
+      "victim-sos-form",
+      "rescue-team-allocator",
+      "network-topology-status",
+      "cybersecurity-log-panel"
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Use JS/JSX files only (not TSX) as per codebase environment.",
+    "Ensure header navigation is fixed with backdrop blur (bg-[#0A0D14]/80) and never fully transparent.",
+    "Ensure all buttons and inputs use custom styled Tailwind/Shadcn primitives with distinct hover and focus states.",
+    "Integrate interactive disaster map visualization (using custom SVG or Map rendering with interactive markers).",
+    "Build real-time simulated WebSocket / IoT event logs with pause/resume simulation feature.",
+    "Provide clear role tabs (Admin Command / Rescue Operator / Citizen SOS) with tailored viewports.",
+    "Include network metrics header banner (Ping, Packet Loss, Bandwidth, Encrypted Mesh Status) to emphasize the Computer Networks PBL theme."
+  ]
+}
