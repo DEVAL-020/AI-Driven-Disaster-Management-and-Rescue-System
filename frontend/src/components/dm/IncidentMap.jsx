@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup, Tooltip, useMap } from "react-leaflet";
 import { sev, sst, SENSOR_LABEL } from "@/lib/dmUtils";
-import { Map as MapIcon, Globe, Layers } from "lucide-react";
+import { Map as MapIcon, Plus, Minus, Maximize2 } from "lucide-react";
 
 // Official Google Maps Tile Servers
 const GOOGLE_MAP_TYPES = {
@@ -31,19 +31,24 @@ const GOOGLE_MAP_TYPES = {
   },
 };
 
-function MapResizer({ incidents, sensors, sos }) {
+function MapInitializer({ incidents, sensors, sos }) {
   const map = useMap();
+  const fittedRef = useRef(false);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       map.invalidateSize();
-      const points = [
-        ...incidents.map((i) => [i.lat, i.lng]),
-        ...sensors.map((s) => [s.lat, s.lng]),
-        ...sos.filter((s) => s.status !== "resolved").map((s) => [s.lat, s.lng]),
-      ].filter((p) => p[0] != null && p[1] != null);
+      if (!fittedRef.current) {
+        const points = [
+          ...incidents.map((i) => [i.lat, i.lng]),
+          ...sensors.map((s) => [s.lat, s.lng]),
+          ...sos.filter((s) => s.status !== "resolved").map((s) => [s.lat, s.lng]),
+        ].filter((p) => p[0] != null && p[1] != null);
 
-      if (points.length > 0) {
-        map.fitBounds(points, { padding: [50, 50], maxZoom: 11 });
+        if (points.length > 0) {
+          map.fitBounds(points, { padding: [50, 50], maxZoom: 10 });
+          fittedRef.current = true;
+        }
       }
     }, 250);
     return () => clearTimeout(timer);
@@ -64,9 +69,47 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
     }
   };
 
+  const fitAllMarkers = () => {
+    if (!mapInstance) return;
+    const points = [
+      ...incidents.map((i) => [i.lat, i.lng]),
+      ...sensors.map((s) => [s.lat, s.lng]),
+      ...sos.filter((s) => s.status !== "resolved").map((s) => [s.lat, s.lng]),
+    ].filter((p) => p[0] != null && p[1] != null);
+
+    if (points.length > 0) {
+      mapInstance.fitBounds(points, { padding: [40, 40], maxZoom: 11 });
+    }
+  };
+
   return (
     <div className="relative h-[500px] lg:h-[600px] w-full rounded-lg overflow-hidden border border-white/10 shadow-2xl" data-testid="incident-map-canvas">
-      {/* Map Control Toolbar Header */}
+      {/* Zoom Controls Overlay (Top Left) */}
+      <div className="absolute top-3 left-3 z-[1000] flex flex-col gap-1.5 bg-[#0A0D14]/90 backdrop-blur-md p-1.5 rounded-lg border border-white/15 shadow-2xl">
+        <button
+          onClick={() => mapInstance?.zoomIn()}
+          className="w-8 h-8 rounded bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-all active:scale-95 border border-white/10"
+          title="Zoom In (+)"
+        >
+          <Plus className="w-4 h-4" />
+        </button>
+        <button
+          onClick={() => mapInstance?.zoomOut()}
+          className="w-8 h-8 rounded bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-all active:scale-95 border border-white/10"
+          title="Zoom Out (-)"
+        >
+          <Minus className="w-4 h-4" />
+        </button>
+        <button
+          onClick={fitAllMarkers}
+          className="w-8 h-8 rounded bg-white/5 hover:bg-white/15 text-blue-400 flex items-center justify-center transition-all active:scale-95 border border-white/10"
+          title="Fit All Emergency Markers"
+        >
+          <Maximize2 className="w-3.5 h-3.5" />
+        </button>
+      </div>
+
+      {/* Layer Control Toolbar Header (Top Right) */}
       <div className="absolute top-3 right-3 z-[1000] flex items-center gap-1 bg-[#0A0D14]/90 backdrop-blur-md p-1.5 rounded-lg border border-white/15 shadow-2xl">
         <button
           onClick={resetPanIndia}
@@ -96,8 +139,8 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
         ))}
       </div>
 
-      <MapContainer ref={setMapInstance} center={indiaCenter} zoom={5} style={{ height: "100%", width: "100%" }} scrollWheelZoom={true}>
-        <MapResizer incidents={incidents} sensors={sensors} sos={sos} />
+      <MapContainer ref={setMapInstance} center={indiaCenter} zoom={5} zoomControl={false} style={{ height: "100%", width: "100%" }} scrollWheelZoom={true}>
+        <MapInitializer incidents={incidents} sensors={sensors} sos={sos} />
         <TileLayer
           key={mapType}
           attribution='&copy; <a href="https://maps.google.com" target="_blank" rel="noreferrer">Google Maps</a>'
@@ -149,4 +192,3 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
     </div>
   );
 }
-
