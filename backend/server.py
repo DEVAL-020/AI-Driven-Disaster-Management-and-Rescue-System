@@ -395,7 +395,7 @@ async def seed():
                 "role": role, "created_at": now_iso(),
             })
 
-    if await db.sensors.count_documents({}) == 0:
+    if await db.sensors.count_documents({"location": {"$regex": "Gujarat"}}) == 0:
         seed_sensors = [
             ("seismic", "Himalayan Fault Zone A - North", 28.6139, 77.2090),
             ("water_level", "Yamuna Dam Spillway - Delhi", 28.6692, 77.2300),
@@ -407,6 +407,18 @@ async def seed():
             ("wind_speed", "Coromandel Coast Station - South", 13.08, 80.27),
             ("water_level", "Brahmaputra Flood Basin - East", 26.14, 91.73),
             ("temperature", "Western Ghats Forest Sector", 11.66, 76.62),
+            # Gujarat & Multi-State Expansion
+            ("seismic", "Kachchh Fault Line - Bhuj, Gujarat", 23.250, 69.670),
+            ("temperature", "Gir Forest Sector - Junagadh, Gujarat", 21.124, 70.528),
+            ("air_quality", "Hazira Industrial Grid - Surat, Gujarat", 21.170, 72.831),
+            ("water_level", "Ukai Dam Spillway - Tapi, Gujarat", 21.252, 73.578),
+            ("water_level", "Sabarmati River Basin - Ahmedabad, Gujarat", 23.022, 72.571),
+            ("seismic", "Narmada Rift Zone - Jabalpur, MP", 23.181, 79.986),
+            ("air_quality", "Industrial Corridor - Kanpur, UP", 26.449, 80.331),
+            ("water_level", "Bhakra Dam Spillway - Punjab", 31.410, 76.430),
+            ("temperature", "Thar Desert Thermal Sector - Jaisalmer, Rajasthan", 26.915, 70.908),
+            ("water_level", "Mahanadi Delta Station - Odisha", 20.462, 85.882),
+            ("seismic", "Srinagar Basin Seismic Sensor - J&K", 34.083, 74.797),
         ]
         docs = []
         for stype, loc, lat, lng in seed_sensors:
@@ -419,7 +431,7 @@ async def seed():
             })
         await db.sensors.insert_many(docs)
 
-    if await db.incidents.count_documents({}) == 0:
+    if await db.incidents.count_documents({"location": {"$regex": "Gujarat"}}) == 0:
         await db.incidents.insert_many([
             {"type": "Flood", "location": "Yamuna Riverbank, East Delhi", "lat": 28.6692, "lng": 77.2300,
              "severity": "high", "description": "Rising water levels breaching embankment near residential blocks.",
@@ -436,6 +448,22 @@ async def seed():
             {"type": "Monsoon Inundation", "location": "Marine Drive, Mumbai", "lat": 18.94, "lng": 72.82,
              "severity": "high", "description": "Heavy high-tide urban flooding disrupting transport lines.",
              "status": "responding", "reported_by": admin_email, "created_at": now_iso(), "ai_analysis": None},
+            # Gujarat & Multi-State Expansion Incidents
+            {"type": "Cyclone Warning", "location": "Mandvi Coastal Belt, Kachchh, Gujarat", "lat": 22.830, "lng": 69.350,
+             "severity": "high", "description": "High wind surge warning & coastal evacuation alert.",
+             "status": "active", "reported_by": admin_email, "created_at": now_iso(), "ai_analysis": None},
+            {"type": "Industrial Gas Leak", "location": "Hazira Industrial Complex, Surat, Gujarat", "lat": 21.170, "lng": 72.720,
+             "severity": "critical", "description": "Chemical gas leak containment procedure activated.",
+             "status": "responding", "reported_by": admin_email, "created_at": now_iso(), "ai_analysis": None},
+            {"type": "Urban Flood", "location": "Sabarmati Riverfront, Ahmedabad, Gujarat", "lat": 23.022, "lng": 72.571,
+             "severity": "moderate", "description": "Sabarmati dam discharge monitoring along riverfront.",
+             "status": "active", "reported_by": admin_email, "created_at": now_iso(), "ai_analysis": None},
+            {"type": "Landslide", "location": "Jammu-Srinagar Highway, J&K", "lat": 33.730, "lng": 75.150,
+             "severity": "high", "description": "Highway blocked by debris after heavy rain.",
+             "status": "responding", "reported_by": admin_email, "created_at": now_iso(), "ai_analysis": None},
+            {"type": "Heatwave", "location": "Thar Sector, Jaisalmer, Rajasthan", "lat": 26.915, "lng": 70.908,
+             "severity": "moderate", "description": "Severe heatwave advisory for western border sector.",
+             "status": "active", "reported_by": admin_email, "created_at": now_iso(), "ai_analysis": None},
         ])
 
     if await db.teams.count_documents({}) == 0:

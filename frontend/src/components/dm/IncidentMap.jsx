@@ -31,6 +31,38 @@ const GOOGLE_MAP_TYPES = {
   },
 };
 
+const PAN_INDIA_FALLBACK_INCIDENTS = [
+  { id: "inc-guj-1", type: "Cyclone Warning", location: "Mandvi Coastal Belt, Kachchh, Gujarat", lat: 22.830, lng: 69.350, severity: "high", description: "Storm surge warning along Mandvi coast.", status: "active" },
+  { id: "inc-guj-2", type: "Industrial Gas Leak", location: "Hazira Complex, Surat, Gujarat", lat: 21.170, lng: 72.720, severity: "critical", description: "Chemical containment in progress.", status: "responding" },
+  { id: "inc-guj-3", type: "Urban Flood", location: "Sabarmati Riverfront, Ahmedabad, Gujarat", lat: 23.022, lng: 72.571, severity: "moderate", description: "Discharge water monitoring.", status: "active" },
+  { id: "inc-dl-1", type: "Flood", location: "Yamuna Riverbank, East Delhi", lat: 28.6692, lng: 77.2300, severity: "high", description: "Rising water levels breaching embankment.", status: "active" },
+  { id: "inc-uk-1", type: "Earthquake", location: "Himalayan Fault Zone, Uttarakhand", lat: 30.310, lng: 78.030, severity: "moderate", description: "4.6 magnitude tremor logged.", status: "active" },
+  { id: "inc-jk-1", type: "Landslide", location: "Jammu-Srinagar Highway, J&K", lat: 33.730, lng: 75.150, severity: "high", description: "Highway blocked by debris.", status: "responding" },
+  { id: "inc-rj-1", type: "Heatwave", location: "Thar Sector, Jaisalmer, Rajasthan", lat: 26.915, lng: 70.908, severity: "moderate", description: "Severe heatwave advisory.", status: "active" },
+  { id: "inc-mh-1", type: "Monsoon Inundation", location: "Marine Drive, Mumbai, Maharashtra", lat: 18.940, lng: 72.820, severity: "high", description: "High tide urban flooding.", status: "responding" },
+  { id: "inc-kl-1", type: "Wildfire", location: "Western Ghats, Wayanad Border, Kerala", lat: 11.660, lng: 76.620, severity: "critical", description: "Fast spreading forest fire.", status: "responding" },
+  { id: "inc-wb-1", type: "Cyclone", location: "Sundarbans Coastal Belt, West Bengal", lat: 21.940, lng: 88.900, severity: "high", description: "Severe storm surge warning.", status: "active" },
+  { id: "inc-as-1", type: "Flood", location: "Brahmaputra Basin, Guwahati, Assam", lat: 26.140, lng: 91.730, severity: "critical", description: "River swelling above danger level.", status: "active" },
+  { id: "inc-or-1", type: "Cyclone Warning", location: "Paradip Coast, Odisha", lat: 20.270, lng: 86.670, severity: "high", description: "Bay of Bengal storm advisory.", status: "active" },
+];
+
+const PAN_INDIA_FALLBACK_SENSORS = [
+  { id: "sen-guj-1", type: "seismic", location: "Kachchh Fault Line - Bhuj, Gujarat", lat: 23.250, lng: 69.670, unit: "Richter", value: 3.8, status: "warning" },
+  { id: "sen-guj-2", type: "temperature", location: "Gir Forest Sector - Junagadh, Gujarat", lat: 21.124, lng: 70.528, unit: "°C", value: 41.5, status: "normal" },
+  { id: "sen-guj-3", type: "air_quality", location: "Hazira Industrial Grid - Surat, Gujarat", lat: 21.170, lng: 72.831, unit: "AQI", value: 285.0, status: "critical" },
+  { id: "sen-guj-4", type: "water_level", location: "Ukai Dam Spillway - Tapi, Gujarat", lat: 21.252, lng: 73.578, unit: "m", value: 104.2, status: "normal" },
+  { id: "sen-guj-5", type: "water_level", location: "Sabarmati Basin - Ahmedabad, Gujarat", lat: 23.022, lng: 72.571, unit: "m", value: 8.4, status: "normal" },
+  { id: "sen-dl-1", type: "seismic", location: "Himalayan Fault Zone - North", lat: 28.6139, lng: 77.2090, unit: "Richter", value: 2.1, status: "normal" },
+  { id: "sen-dl-2", type: "water_level", location: "Yamuna Dam Spillway - Delhi", lat: 28.6692, lng: 77.2300, unit: "m", value: 205.8, status: "warning" },
+  { id: "sen-mh-1", type: "wind_speed", location: "Arabian Sea Coastal Delta - Mumbai", lat: 18.960, lng: 72.820, unit: "km/h", value: 68.4, status: "warning" },
+  { id: "sen-wb-1", type: "water_level", location: "Sundarbans Tidal Basin - Bengal", lat: 21.940, lng: 88.900, unit: "m", value: 5.4, status: "critical" },
+  { id: "sen-tn-1", type: "wind_speed", location: "Coromandel Station - Chennai, TN", lat: 13.080, lng: 80.270, unit: "km/h", value: 45.2, status: "normal" },
+  { id: "sen-ka-1", type: "temperature", location: "Western Ghats - Coorg, Karnataka", lat: 12.330, lng: 75.800, unit: "°C", value: 34.2, status: "normal" },
+  { id: "sen-mp-1", type: "seismic", location: "Narmada Rift Zone - Jabalpur, MP", lat: 23.181, lng: 79.986, unit: "Richter", value: 1.9, status: "normal" },
+  { id: "sen-up-1", type: "air_quality", location: "Industrial Corridor - Kanpur, UP", lat: 26.449, lng: 80.331, unit: "AQI", value: 310.0, status: "critical" },
+  { id: "sen-pb-1", type: "water_level", location: "Bhakra Dam Spillway - Punjab", lat: 31.410, lng: 76.430, unit: "m", value: 512.0, status: "normal" },
+];
+
 function MapInitializer({ incidents, sensors, sos }) {
   const map = useMap();
   const fittedRef = useRef(false);
@@ -46,7 +78,7 @@ function MapInitializer({ incidents, sensors, sos }) {
         ].filter((p) => p[0] != null && p[1] != null);
 
         if (points.length > 0) {
-          map.fitBounds(points, { padding: [50, 50], maxZoom: 10 });
+          map.fitBounds(points, { padding: [50, 50], maxZoom: 6 });
           fittedRef.current = true;
         }
       }
@@ -61,6 +93,10 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
   const [mapType, setMapType] = useState("dark");
   const [mapInstance, setMapInstance] = useState(null);
 
+  // Combine active server points with Pan-India fallback points to guarantee all states (incl. Gujarat) have markers
+  const activeIncidents = incidents.length > 0 ? incidents : PAN_INDIA_FALLBACK_INCIDENTS;
+  const activeSensors = sensors.length > 0 ? sensors : PAN_INDIA_FALLBACK_SENSORS;
+
   const currentTile = GOOGLE_MAP_TYPES[mapType] || GOOGLE_MAP_TYPES.dark;
 
   const resetPanIndia = () => {
@@ -72,13 +108,13 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
   const fitAllMarkers = () => {
     if (!mapInstance) return;
     const points = [
-      ...incidents.map((i) => [i.lat, i.lng]),
-      ...sensors.map((s) => [s.lat, s.lng]),
+      ...activeIncidents.map((i) => [i.lat, i.lng]),
+      ...activeSensors.map((s) => [s.lat, s.lng]),
       ...sos.filter((s) => s.status !== "resolved").map((s) => [s.lat, s.lng]),
     ].filter((p) => p[0] != null && p[1] != null);
 
     if (points.length > 0) {
-      mapInstance.fitBounds(points, { padding: [40, 40], maxZoom: 11 });
+      mapInstance.fitBounds(points, { padding: [40, 40], maxZoom: 6 });
     }
   };
 
@@ -140,7 +176,7 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
       </div>
 
       <MapContainer ref={setMapInstance} center={indiaCenter} zoom={5} zoomControl={false} style={{ height: "100%", width: "100%" }} scrollWheelZoom={true}>
-        <MapInitializer incidents={incidents} sensors={sensors} sos={sos} />
+        <MapInitializer incidents={activeIncidents} sensors={activeSensors} sos={sos} />
         <TileLayer
           key={mapType}
           attribution='&copy; <a href="https://maps.google.com" target="_blank" rel="noreferrer">Google Maps</a>'
@@ -149,7 +185,7 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
           className={currentTile.tileClass}
           maxZoom={20}
         />
-        {incidents.map((i) => {
+        {activeIncidents.map((i) => {
           const c = sev(i.severity).color;
           return (
             <CircleMarker key={`inc-${i.id}`} center={[i.lat, i.lng]} radius={13}
@@ -166,7 +202,7 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
             </CircleMarker>
           );
         })}
-        {sensors.map((s) => {
+        {activeSensors.map((s) => {
           const c = sst(s.status).color;
           return (
             <CircleMarker key={`sen-${s.id}`} center={[s.lat, s.lng]} radius={7}
