@@ -122,67 +122,69 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
   };
 
   return (
-    <div className="relative h-[500px] lg:h-[600px] w-full rounded-lg overflow-hidden border border-white/10 shadow-2xl" data-testid="incident-map-canvas">
+    <div className="relative h-[380px] sm:h-[500px] lg:h-[600px] w-full rounded-lg overflow-hidden border border-white/10 shadow-2xl" data-testid="incident-map-canvas">
       {/* Zoom Controls Overlay (Top Left) */}
-      <div className="absolute top-3 left-3 z-[1000] flex flex-col gap-1.5 bg-[#0A0D14]/90 backdrop-blur-md p-1.5 rounded-lg border border-white/15 shadow-2xl">
+      <div className="absolute top-2 left-2 sm:top-3 sm:left-3 z-[1000] flex flex-col gap-1 bg-[#0A0D14]/90 backdrop-blur-md p-1 sm:p-1.5 rounded-lg border border-white/15 shadow-2xl">
         <button
           onClick={() => mapInstance?.zoomIn()}
-          className="w-8 h-8 rounded bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-all active:scale-95 border border-white/10"
+          className="w-7 h-7 sm:w-8 sm:h-8 rounded bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-all active:scale-95 border border-white/10"
           title="Zoom In (+)"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </button>
         <button
           onClick={() => mapInstance?.zoomOut()}
-          className="w-8 h-8 rounded bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-all active:scale-95 border border-white/10"
+          className="w-7 h-7 sm:w-8 sm:h-8 rounded bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-all active:scale-95 border border-white/10"
           title="Zoom Out (-)"
         >
-          <Minus className="w-4 h-4" />
+          <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </button>
         <button
           onClick={fitAllMarkers}
-          className="w-8 h-8 rounded bg-white/5 hover:bg-white/15 text-blue-400 flex items-center justify-center transition-all active:scale-95 border border-white/10"
+          className="w-7 h-7 sm:w-8 sm:h-8 rounded bg-white/5 hover:bg-white/15 text-blue-400 flex items-center justify-center transition-all active:scale-95 border border-white/10"
           title="Fit All Emergency Markers"
         >
-          <Maximize2 className="w-3.5 h-3.5" />
+          <Maximize2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </button>
       </div>
 
       {/* Layer Control Toolbar Header (Top Right) */}
-      <div className="absolute top-3 right-3 z-[1000] flex items-center gap-1 bg-[#0A0D14]/90 backdrop-blur-md p-1.5 rounded-lg border border-white/15 shadow-2xl">
+      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-[1000] flex items-center flex-wrap justify-end gap-1 max-w-[calc(100vw-65px)] sm:max-w-none bg-[#0A0D14]/90 backdrop-blur-md p-1 sm:p-1.5 rounded-lg border border-white/15 shadow-2xl">
         <button
           onClick={resetGecGandhinagar}
-          className="px-2.5 py-1 rounded text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-all shadow flex items-center gap-1"
+          className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded text-[11px] sm:text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-all shadow flex items-center gap-0.5 sm:gap-1"
           title="Focus on Government Engineering College, Gandhinagar"
         >
-          <span>📍 GEC Gandhinagar</span>
+          <span>📍 GEC <span className="hidden sm:inline">Gandhinagar</span></span>
         </button>
         <button
           onClick={resetPanIndia}
-          className="px-2.5 py-1 rounded text-xs font-semibold bg-emerald-600/90 hover:bg-emerald-500 text-white transition-all shadow flex items-center gap-1"
+          className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded text-[11px] sm:text-xs font-semibold bg-emerald-600/90 hover:bg-emerald-500 text-white transition-all shadow flex items-center gap-0.5 sm:gap-1"
           title="Zoom to Pan-India view"
         >
-          <span>🇮🇳 Pan-India</span>
+          <span>🇮🇳 <span className="hidden sm:inline">Pan-India</span><span className="inline sm:hidden">India</span></span>
         </button>
-        <div className="h-4 w-px bg-white/20 mx-0.5" />
-        <div className="text-[10px] font-semibold text-slate-300 uppercase tracking-wider px-2 flex items-center gap-1">
+        <div className="hidden sm:block h-4 w-px bg-white/20 mx-0.5" />
+        <div className="hidden md:flex text-[10px] font-semibold text-slate-300 uppercase tracking-wider px-1.5 items-center gap-1">
           <MapIcon className="w-3.5 h-3.5 text-blue-400" />
-          <span className="hidden sm:inline">Google Maps</span>
+          <span>Google Maps</span>
         </div>
-        <div className="h-4 w-px bg-white/20 mx-0.5" />
-        {Object.entries(GOOGLE_MAP_TYPES).map(([typeKey, typeObj]) => (
-          <button
-            key={typeKey}
-            onClick={() => setMapType(typeKey)}
-            className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
-              mapType === typeKey
-                ? "bg-blue-600 text-white shadow"
-                : "text-slate-300 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            {typeObj.label}
-          </button>
-        ))}
+        <div className="hidden md:block h-4 w-px bg-white/20 mx-0.5" />
+        <div className="flex items-center gap-0.5 overflow-x-auto no-scrollbar">
+          {Object.entries(GOOGLE_MAP_TYPES).map(([typeKey, typeObj]) => (
+            <button
+              key={typeKey}
+              onClick={() => setMapType(typeKey)}
+              className={`px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs font-medium transition-all whitespace-nowrap ${
+                mapType === typeKey
+                  ? "bg-blue-600 text-white shadow"
+                  : "text-slate-300 hover:text-white hover:bg-white/10"
+              }`}
+            >
+              {typeObj.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <MapContainer ref={setMapInstance} center={gecGandhinagarCenter} zoom={15} zoomControl={false} style={{ height: "100%", width: "100%" }} scrollWheelZoom={true}>

@@ -32,24 +32,24 @@ export default function AIChat() {
   return (
     <>
       <button data-testid="ai-chat-toggle" onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center shadow-2xl shadow-blue-600/30 transition-all hover:scale-105">
-        {open ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center shadow-2xl shadow-blue-600/30 transition-all hover:scale-105">
+        {open ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6" />}
       </button>
       <AnimatePresence>
         {open && (
           <motion.div initial={{ opacity: 0, y: 20, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.96 }}
-            className="fixed bottom-24 right-6 z-50 w-[90vw] max-w-sm h-[460px] bg-[#121824] border border-white/10 rounded-lg shadow-2xl flex flex-col overflow-hidden" data-testid="ai-chat-panel">
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-[#0A0D14]">
-              <div className="w-8 h-8 rounded-md bg-blue-600 flex items-center justify-center"><Bot className="w-4 h-4 text-white" /></div>
+            className="fixed bottom-20 right-3 sm:right-6 left-3 sm:left-auto z-50 w-auto sm:w-[380px] max-w-sm h-[420px] sm:h-[460px] max-h-[75vh] bg-[#121824] border border-white/10 rounded-lg shadow-2xl flex flex-col overflow-hidden" data-testid="ai-chat-panel">
+            <div className="flex items-center gap-2 px-3.5 py-2.5 sm:px-4 sm:py-3 border-b border-white/10 bg-[#0A0D14]">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-md bg-blue-600 flex items-center justify-center"><Bot className="w-4 h-4 text-white" /></div>
               <div>
-                <div className="font-heading font-semibold text-white text-sm tracking-wide">RESCUE-AI Assistant</div>
+                <div className="font-heading font-semibold text-white text-xs sm:text-sm tracking-wide">RESCUE-AI Assistant</div>
                 <div className="font-mono text-[9px] text-emerald-400 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />AI core online</div>
               </div>
             </div>
             <div className="flex-1 overflow-y-auto p-3 space-y-3">
               {msgs.map((m, i) => (
                 <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${m.role === "user" ? "bg-blue-600 text-white" : "bg-[#0A0D14] border border-white/10 text-slate-200"}`}>
+                  <div className={`max-w-[85%] rounded-lg px-3 py-2 text-xs sm:text-sm ${m.role === "user" ? "bg-blue-600 text-white" : "bg-[#0A0D14] border border-white/10 text-slate-200"}`}>
                     {m.text}
                   </div>
                 </div>
@@ -57,9 +57,9 @@ export default function AIChat() {
               {loading && <div className="flex justify-start"><div className="bg-[#0A0D14] border border-white/10 rounded-lg px-3 py-2"><Loader2 className="w-4 h-4 animate-spin text-blue-400" /></div></div>}
               <div ref={endRef} />
             </div>
-            <form onSubmit={send} className="p-3 border-t border-white/10 flex gap-2">
+            <form onSubmit={send} className="p-2.5 sm:p-3 border-t border-white/10 flex gap-2">
               <Input data-testid="ai-chat-input" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask RESCUE-AI..."
-                className="bg-[#0A0D14] border-white/15 text-white" />
+                className="bg-[#0A0D14] border-white/15 text-white text-xs sm:text-sm" />
               <Button data-testid="ai-chat-send" type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-500 text-white px-3"><Send className="w-4 h-4" /></Button>
             </form>
           </motion.div>
