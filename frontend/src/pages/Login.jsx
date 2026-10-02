@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ShieldAlert, Loader2 } from "lucide-react";
+import { ShieldAlert, Loader2, ArrowLeft } from "lucide-react";
 import { useAuth, formatApiError } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,7 +29,17 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0D14] flex items-center justify-center p-5">
+    <div className="relative min-h-screen bg-[#0A0D14] flex items-center justify-center p-5">
+      <div className="absolute top-6 left-6 z-10">
+        <button
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#121824]/90 hover:bg-[#1a2336] text-slate-300 hover:text-white border border-white/10 text-xs font-mono uppercase tracking-wider transition-all shadow-lg active:scale-95"
+          data-testid="login-back-btn"
+        >
+          <ArrowLeft className="w-4 h-4 text-blue-400" />
+          <span>Back</span>
+        </button>
+      </div>
       <div className="w-full max-w-md">
         <Link to="/" className="flex items-center justify-center gap-2 mb-8">
           <div className="w-10 h-10 rounded-md bg-blue-600 flex items-center justify-center"><ShieldAlert className="w-6 h-6 text-white" /></div>

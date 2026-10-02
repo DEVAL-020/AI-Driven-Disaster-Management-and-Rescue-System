@@ -14,7 +14,7 @@ import SecurityPanel from "@/components/dm/SecurityPanel";
 import AIChat from "@/components/dm/AIChat";
 import {
   ShieldAlert, LogOut, LayoutDashboard, Radio, BrainCircuit, Shield, Siren, Lock,
-  Flame, CheckCircle2, Truck, AlertOctagon,
+  Flame, CheckCircle2, Truck, AlertOctagon, ArrowLeft,
 } from "lucide-react";
 
 const ROLE_META = {
@@ -120,11 +120,22 @@ export default function Dashboard() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-[#0A0D14]/85 backdrop-blur-md border-b border-white/10">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3" data-testid="navbar-brand-logo">
-            <div className="w-9 h-9 rounded-md bg-blue-600 flex items-center justify-center"><ShieldAlert className="w-5 h-5 text-white" /></div>
-            <div>
-              <div className="font-heading font-bold text-lg tracking-wider uppercase leading-none">Sentinel<span className="text-blue-500">AI</span></div>
-              <div className={`font-mono text-[9px] uppercase tracking-widest ${ROLE_META[role].color}`}>{ROLE_META[role].label}</div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/")}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-mono uppercase tracking-wider transition-all"
+              title="Return to Home Page"
+              data-testid="dashboard-back-home-btn"
+            >
+              <ArrowLeft className="w-4 h-4 text-blue-400" />
+              <span className="hidden sm:inline">Back</span>
+            </button>
+            <div className="flex items-center gap-3" data-testid="navbar-brand-logo">
+              <div className="w-9 h-9 rounded-md bg-blue-600 flex items-center justify-center"><ShieldAlert className="w-5 h-5 text-white" /></div>
+              <div>
+                <div className="font-heading font-bold text-lg tracking-wider uppercase leading-none">Sentinel<span className="text-blue-500">AI</span></div>
+                <div className={`font-mono text-[9px] uppercase tracking-widest ${ROLE_META[role].color}`}>{ROLE_META[role].label}</div>
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-3">
