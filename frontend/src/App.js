@@ -6,6 +6,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard";
 import Landing from "@/pages/Landing";
+import FloatingGithubButton from "@/components/dm/FloatingGithubButton";
 import { Loader2 } from "lucide-react";
 
 function Protected({ children }) {
@@ -39,6 +40,7 @@ function App() {
             <Route path="/command" element={<Protected><Dashboard /></Protected>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          <FloatingGithubButton />
         </BrowserRouter>
       </AuthProvider>
     </div>
