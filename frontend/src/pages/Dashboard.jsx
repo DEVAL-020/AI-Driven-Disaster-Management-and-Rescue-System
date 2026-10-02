@@ -49,11 +49,11 @@ const TABS = {
 
 function StatCard({ icon: Icon, label, value, color, testid }) {
   return (
-    <div data-testid={testid} className="bg-[#121824]/90 border border-white/10 rounded-lg p-4 flex items-center gap-3">
-      <div className={`w-10 h-10 rounded-md flex items-center justify-center bg-white/5 ${color}`}><Icon className="w-5 h-5" /></div>
+    <div data-testid={testid} className="bg-[#121824]/90 border border-white/10 rounded-lg p-4 flex items-center gap-3.5 shadow-lg transition-all hover:border-blue-500/30">
+      <div className={`w-11 h-11 rounded-lg flex items-center justify-center bg-white/5 ${color}`}><Icon className="w-5 h-5" /></div>
       <div>
-        <div className="font-heading font-bold text-2xl text-white leading-none">{value}</div>
-        <div className="font-mono text-[9px] uppercase tracking-widest text-slate-500 mt-1">{label}</div>
+        <div className="font-heading font-bold text-2xl text-slate-900 dark:text-white leading-none">{value}</div>
+        <div className="font-mono text-[9px] uppercase tracking-widest text-slate-500 dark:text-slate-400 mt-1">{label}</div>
       </div>
     </div>
   );

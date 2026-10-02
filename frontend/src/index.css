@@ -61,6 +61,23 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+/* DARK THEME (default) */
+body.dark-theme {
+  background-color: #0B0E17;
+  color: #F8FAFC;
+}
+
+.dark-theme .bg-\[\#0A0D14\] {
+  background-color: #0B0E17;
+}
+
+.dark-theme .bg-\[\#121824\]\/90 {
+  background-color: rgba(18, 24, 36, 0.95);
+  color: #F8FAFC;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* LIGHT THEME */
 body.light-theme {
   background-color: #F1F5F9;
   color: #0F172A;
@@ -73,23 +90,42 @@ body.light-theme {
 .light-theme .bg-\[\#121824\]\/90 {
   background-color: #FFFFFF !important;
   color: #0F172A !important;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
 }
 
 .light-theme .border-white\/10, .light-theme .border-white\/15 {
-  border-color: rgba(0, 0, 0, 0.1) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
 }
 
-.light-theme .text-slate-100, .light-theme .text-white {
-  color: #0F172A !important;
+.light-theme .text-slate-400, .light-theme .text-slate-500 {
+  color: #64748B !important;
 }
 
-.light-theme .text-slate-300, .light-theme .text-slate-400 {
-  color: #475569 !important;
+.light-theme .text-slate-300 {
+  color: #334155 !important;
 }
 
 .light-theme .bg-white\/5 {
   background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.light-theme input, 
+.light-theme select,
+.light-theme textarea {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.light-theme ::-webkit-scrollbar-track { background: #F1F5F9; }
+.light-theme ::-webkit-scrollbar-thumb { background: #CBD5E1; }
+.light-theme ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+.light-theme .leaflet-popup-content-wrapper, .light-theme .leaflet-popup-tip {
+  background: #FFFFFF;
+  color: #0F172A;
+  border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .font-heading { font-family: 'Poppins', sans-serif; letter-spacing: -0.01em; }
