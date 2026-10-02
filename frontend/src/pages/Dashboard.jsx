@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
+import { useTheme } from "@/context/ThemeContext";
 import api from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import NetworkBanner from "@/components/dm/NetworkBanner";
@@ -14,7 +15,7 @@ import SecurityPanel from "@/components/dm/SecurityPanel";
 import AIChat from "@/components/dm/AIChat";
 import {
   ShieldAlert, LogOut, LayoutDashboard, Radio, BrainCircuit, Shield, Siren, Lock,
-  Flame, CheckCircle2, Truck, AlertOctagon,
+  Flame, CheckCircle2, Truck, AlertOctagon, Sun, Moon,
 } from "lucide-react";
 
 const ROLE_META = {
@@ -91,6 +92,8 @@ export default function Dashboard() {
     { icon: CheckCircle2, label: "Resolved", value: stats?.resolved_incidents ?? "—", color: "text-slate-300", testid: "stat-resolved" },
   ];
 
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <div className="min-h-screen bg-[#0A0D14] text-slate-100">
       {/* Header */}
@@ -104,6 +107,15 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              data-testid="theme-toggle-btn"
+              className="p-2 rounded-lg border border-white/15 bg-white/5 text-slate-200 hover:bg-white/10 transition-all flex items-center gap-1.5"
+              title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+            >
+              {theme === "light" ? <Moon className="w-4 h-4 text-amber-500" /> : <Sun className="w-4 h-4 text-amber-400" />}
+              <span className="text-xs font-medium hidden md:inline">{theme === "light" ? "Dark" : "Light"}</span>
+            </button>
             <div className="hidden sm:block text-right">
               <div className="text-sm text-white leading-none">{user?.name}</div>
               <div className="font-mono text-[9px] uppercase tracking-widest text-slate-500 mt-0.5">{user?.email}</div>
