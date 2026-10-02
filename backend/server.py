@@ -397,12 +397,16 @@ async def seed():
 
     if await db.sensors.count_documents({}) == 0:
         seed_sensors = [
-            ("seismic", "Fault Zone A - Riverside", 28.6139, 77.2090),
-            ("water_level", "Yamuna Dam Spillway", 28.6692, 77.2300),
-            ("temperature", "Wildfire Sector 7", 28.5355, 77.3910),
-            ("air_quality", "Industrial Belt East", 28.7041, 77.1025),
-            ("wind_speed", "Coastal Station Delta", 28.4595, 77.0266),
-            ("water_level", "North Canal Gauge", 28.7500, 77.1200),
+            ("seismic", "Himalayan Fault Zone A - North", 28.6139, 77.2090),
+            ("water_level", "Yamuna Dam Spillway - Delhi", 28.6692, 77.2300),
+            ("temperature", "Sector 7 Forest Reserve", 28.5355, 77.3910),
+            ("air_quality", "Industrial Belt - North", 28.7041, 77.1025),
+            ("wind_speed", "Coastal Station Delta - Arabian Sea", 18.96, 72.82),
+            ("water_level", "Sundarbans Tidal Basin - Bengal", 21.94, 88.90),
+            ("seismic", "Deccan Plateau Fault - Central", 19.87, 75.34),
+            ("wind_speed", "Coromandel Coast Station - South", 13.08, 80.27),
+            ("water_level", "Brahmaputra Flood Basin - East", 26.14, 91.73),
+            ("temperature", "Western Ghats Forest Sector", 11.66, 76.62),
         ]
         docs = []
         for stype, loc, lat, lng in seed_sensors:
@@ -420,12 +424,18 @@ async def seed():
             {"type": "Flood", "location": "Yamuna Riverbank, East Delhi", "lat": 28.6692, "lng": 77.2300,
              "severity": "high", "description": "Rising water levels breaching embankment near residential blocks.",
              "status": "active", "reported_by": admin_email, "created_at": now_iso(), "ai_analysis": None},
-            {"type": "Wildfire", "location": "Sector 7 Forest Reserve", "lat": 28.5355, "lng": 77.3910,
+            {"type": "Wildfire", "location": "Western Ghats Forest Reserve", "lat": 11.66, "lng": 76.62,
              "severity": "critical", "description": "Fast-spreading wildfire with high wind conditions.",
              "status": "responding", "reported_by": admin_email, "created_at": now_iso(), "ai_analysis": None},
-            {"type": "Earthquake", "location": "Downtown Fault Zone A", "lat": 28.6139, "lng": 77.2090,
+            {"type": "Earthquake", "location": "Himalayan Thrust Fault Zone", "lat": 30.31, "lng": 78.03,
              "severity": "moderate", "description": "4.6 magnitude tremor, structural assessment underway.",
              "status": "active", "reported_by": admin_email, "created_at": now_iso(), "ai_analysis": None},
+            {"type": "Cyclone", "location": "Sundarbans Coastal Belt, West Bengal", "lat": 21.94, "lng": 88.90,
+             "severity": "high", "description": "Severe storm surge warning and coastal evacuation in progress.",
+             "status": "active", "reported_by": admin_email, "created_at": now_iso(), "ai_analysis": None},
+            {"type": "Monsoon Inundation", "location": "Marine Drive, Mumbai", "lat": 18.94, "lng": 72.82,
+             "severity": "high", "description": "Heavy high-tide urban flooding disrupting transport lines.",
+             "status": "responding", "reported_by": admin_email, "created_at": now_iso(), "ai_analysis": None},
         ])
 
     if await db.teams.count_documents({}) == 0:
