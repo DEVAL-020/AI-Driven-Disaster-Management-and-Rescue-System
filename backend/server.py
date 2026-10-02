@@ -113,14 +113,16 @@ def require_roles(*roles):
 
 @api.post("/auth/register")
 async def register(payload: RegisterIn, response: Response):
-    email = payload.email.lower()
+    if len(payload.password) < 6:
+        raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
+    email = payload.email.lower().strip()
     role = payload.role if payload.role in auth_mod.ROLES else "citizen"
     if role == "admin":
         role = "citizen"
     if await db.users.find_one({"email": email}):
         raise HTTPException(status_code=400, detail="Email already registered")
     doc = {
-        "name": payload.name,
+        "name": payload.name.strip(),
         "email": email,
         "password_hash": auth_mod.hash_password(payload.password),
         "role": role,
@@ -473,6 +475,17 @@ async def ensure_seeded(request: Request, call_next):
                 media_type="application/json",
             )
     return await call_next(request)
+
+
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
 
 
 @api.get("/")
