@@ -52,7 +52,8 @@ body {
 ::selection { background: rgba(37, 99, 235, 0.4); color: #fff; }
 
 .leaflet-container { background: #0A0D14; font-family: 'Poppins', sans-serif; }
-.leaflet-tile { filter: brightness(0.9) contrast(1.05); }
+.google-dark-tile { filter: brightness(0.65) invert(1) contrast(0.9) hue-rotate(200deg) saturate(0.35); }
+.google-normal-tile { filter: brightness(0.95) contrast(1.05); }
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #182030; color: #F8FAFC; border: 1px solid rgba(255,255,255,0.1); }
 .leaflet-bar a { background: #182030; color: #F8FAFC; border-color: #243049; }
 .leaflet-bar a:hover { background: #243049; }
