@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 @import 'leaflet/dist/leaflet.css';
 
 @tailwind base;
@@ -36,13 +36,13 @@ body {
   margin: 0;
   background-color: #0A0D14;
   color: #F8FAFC;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-.font-heading { font-family: 'Barlow Condensed', sans-serif; }
-.font-mono { font-family: 'JetBrains Mono', monospace; }
-.font-sans { font-family: 'Inter', sans-serif; }
+.font-heading { font-family: 'Poppins', sans-serif; letter-spacing: -0.01em; }
+.font-mono { font-family: 'Plus Jakarta Sans', sans-serif; }
+.font-sans { font-family: 'Poppins', sans-serif; }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: #0A0D14; }
@@ -51,8 +51,8 @@ body {
 
 ::selection { background: rgba(37, 99, 235, 0.4); color: #fff; }
 
-.leaflet-container { background: #0A0D14; font-family: 'JetBrains Mono', monospace; }
-.leaflet-tile { filter: brightness(0.6) invert(1) contrast(0.9) hue-rotate(200deg) saturate(0.4) brightness(0.9); }
+.leaflet-container { background: #0A0D14; font-family: 'Poppins', sans-serif; }
+.leaflet-tile { filter: brightness(0.9) contrast(1.05); }
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #182030; color: #F8FAFC; border: 1px solid rgba(255,255,255,0.1); }
 .leaflet-bar a { background: #182030; color: #F8FAFC; border-color: #243049; }
 .leaflet-bar a:hover { background: #243049; }
