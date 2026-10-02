@@ -87,7 +87,7 @@ function MapInitializer() {
 
 export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) {
   const indiaCenter = [21.5937, 78.9629];
-  const [mapType, setMapType] = useState("dark");
+  const [mapType, setMapType] = useState("satellite");
   const [mapInstance, setMapInstance] = useState(null);
 
   // Combine active server points with Pan-India fallback points to guarantee all states (incl. Gujarat & GEC Gandhinagar) have markers
