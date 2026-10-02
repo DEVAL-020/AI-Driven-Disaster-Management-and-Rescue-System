@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/api";
@@ -61,9 +61,29 @@ function StatCard({ icon: Icon, label, value, color, testid }) {
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const role = user?.role || "citizen";
   const tabs = TABS[role] || TABS.citizen;
-  const [tab, setTab] = useState(tabs[0].id);
+
+  // Preserve active working tab across page reloads via URL search params & localStorage
+  const urlTab = searchParams.get("tab");
+  const storedTab = localStorage.getItem("sentinel_active_tab");
+  const defaultTab = tabs.find((t) => t.id === urlTab)?.id || tabs.find((t) => t.id === storedTab)?.id || tabs[0].id;
+
+  const [tab, setTabState] = useState(defaultTab);
+
+  const setTab = (newTabId) => {
+    setTabState(newTabId);
+    localStorage.setItem("sentinel_active_tab", newTabId);
+    setSearchParams({ tab: newTabId }, { replace: true });
+  };
+
+  useEffect(() => {
+    if (!searchParams.get("tab") && tab) {
+      setSearchParams({ tab }, { replace: true });
+    }
+  }, [tab, searchParams, setSearchParams]);
 
   const [stats, setStats] = useState(null);
   const [incidents, setIncidents] = useState([]);
@@ -76,7 +96,11 @@ export default function Dashboard() {
 
   useEffect(() => { loadStats(); const t = setInterval(loadStats, 6000); return () => clearInterval(t); }, [loadStats]);
 
-  const doLogout = async () => { await logout(); navigate("/login"); };
+  const doLogout = async () => {
+    localStorage.removeItem("sentinel_active_tab");
+    await logout();
+    navigate("/login");
+  };
 
   const statCards = role === "citizen" ? [
     { icon: AlertOctagon, label: "Active Incidents", value: stats?.active_incidents ?? "—", color: "text-red-400", testid: "active-incidents-counter" },
