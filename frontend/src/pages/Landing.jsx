@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import {
-  ShieldAlert, Radio, BrainCircuit, Network, Lock, MapPin, ArrowRight, Activity,
+  ShieldAlert, Radio, BrainCircuit, Network, Lock, MapPin, ArrowRight, Activity, LogOut, LayoutDashboard,
 } from "lucide-react";
 
 const features = [
@@ -15,6 +17,16 @@ const features = [
 ];
 
 export default function Landing() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    localStorage.removeItem("sentinel_active_tab");
+    await logout();
+    toast.success("Logged out successfully");
+    navigate("/");
+  };
+
   return (
     <div className="min-h-screen bg-[#0A0D14] text-slate-100 overflow-x-hidden">
       <header className="fixed top-0 inset-x-0 z-50 bg-[#0A0D14]/80 backdrop-blur-md border-b border-white/10">
@@ -26,8 +38,29 @@ export default function Landing() {
             <span className="font-heading font-bold text-xl tracking-wider uppercase">Sentinel<span className="text-blue-500">AI</span></span>
           </div>
           <div className="flex items-center gap-3">
-            <Link to="/login"><Button variant="ghost" className="text-slate-300 hover:text-white hover:bg-white/5" data-testid="nav-login-btn">Sign In</Button></Link>
-            <Link to="/register"><Button className="bg-blue-600 hover:bg-blue-500 text-white" data-testid="nav-register-btn">Get Access</Button></Link>
+            {user ? (
+              <>
+                <Link to="/command">
+                  <Button size="sm" className="bg-blue-600 hover:bg-blue-500 text-white flex items-center gap-1.5" data-testid="nav-dashboard-btn">
+                    <LayoutDashboard className="w-4 h-4" /> Command Dashboard
+                  </Button>
+                </Link>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleLogout}
+                  className="border-red-500/30 bg-red-500/10 text-red-300 hover:bg-red-500/20 hover:border-red-500/50 hover:text-white transition-all flex items-center gap-1.5"
+                  data-testid="nav-logout-btn"
+                >
+                  <LogOut className="w-4 h-4" /> Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/login"><Button variant="ghost" className="text-slate-300 hover:text-white hover:bg-white/5" data-testid="nav-login-btn">Sign In</Button></Link>
+                <Link to="/register"><Button className="bg-blue-600 hover:bg-blue-500 text-white" data-testid="nav-register-btn">Get Access</Button></Link>
+              </>
+            )}
           </div>
         </div>
       </header>

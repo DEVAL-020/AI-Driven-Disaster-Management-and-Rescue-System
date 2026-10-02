@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -99,6 +100,7 @@ export default function Dashboard() {
   const doLogout = async () => {
     localStorage.removeItem("sentinel_active_tab");
     await logout();
+    toast.success("Logged out successfully");
     navigate("/login");
   };
 
@@ -143,8 +145,8 @@ export default function Dashboard() {
               <div className="text-sm text-white leading-none">{user?.name}</div>
               <div className="font-mono text-[9px] uppercase tracking-widest text-slate-500 mt-0.5">{user?.email}</div>
             </div>
-            <Button data-testid="logout-btn" onClick={doLogout} variant="outline" size="sm" className="border-white/15 bg-white/5 text-slate-200 hover:bg-white/10">
-              <LogOut className="w-4 h-4 sm:mr-1.5" /><span className="hidden sm:inline">Exit</span>
+            <Button data-testid="logout-btn" onClick={doLogout} variant="outline" size="sm" className="border-red-500/30 bg-red-500/10 text-red-300 hover:bg-red-500/20 hover:border-red-500/50 hover:text-white transition-all">
+              <LogOut className="w-4 h-4 mr-1.5" /><span>Logout</span>
             </Button>
           </div>
         </div>
