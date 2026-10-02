@@ -2,28 +2,11 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
-import { ThemeProvider, useTheme } from "@/context/ThemeContext";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard";
 import Landing from "@/pages/Landing";
 import { Loader2 } from "lucide-react";
-
-function AppContent() {
-  const { theme } = useTheme();
-  return (
-    <>
-      <Toaster position="top-right" theme={theme === "light" ? "light" : "dark"} richColors />
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<PublicOnly><Login /></PublicOnly>} />
-        <Route path="/register" element={<PublicOnly><Register /></PublicOnly>} />
-        <Route path="/command" element={<Protected><Dashboard /></Protected>} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </>
-  );
-}
 
 function Protected({ children }) {
   const { user } = useAuth();
@@ -46,13 +29,18 @@ function PublicOnly({ children }) {
 function App() {
   return (
     <div className="App">
-      <ThemeProvider>
-        <AuthProvider>
-          <BrowserRouter>
-            <AppContent />
-          </BrowserRouter>
-        </AuthProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Toaster position="top-right" theme="dark" richColors />
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<PublicOnly><Login /></PublicOnly>} />
+            <Route path="/register" element={<PublicOnly><Register /></PublicOnly>} />
+            <Route path="/command" element={<Protected><Dashboard /></Protected>} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </div>
   );
 }
