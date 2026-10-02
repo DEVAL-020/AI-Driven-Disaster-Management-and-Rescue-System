@@ -20,7 +20,7 @@ export default function FloatingGithubButton() {
         </span>
       </div>
       <span className="font-heading text-xs font-semibold uppercase tracking-wider text-slate-200 group-hover:text-white transition-colors">
-        GitHub Code
+        GitHub
       </span>
       <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-400 transition-colors ml-0.5" />
     </a>
