@@ -408,6 +408,7 @@ async def seed():
             ("water_level", "Brahmaputra Flood Basin - East", 26.14, 91.73),
             ("temperature", "Western Ghats Forest Sector", 11.66, 76.62),
             # Gujarat & Multi-State Expansion
+            ("air_quality", "GEC Campus Sensor - Sector 28, Gandhinagar", 23.2591, 72.6537),
             ("seismic", "Kachchh Fault Line - Bhuj, Gujarat", 23.250, 69.670),
             ("temperature", "Gir Forest Sector - Junagadh, Gujarat", 21.124, 70.528),
             ("air_quality", "Hazira Industrial Grid - Surat, Gujarat", 21.170, 72.831),

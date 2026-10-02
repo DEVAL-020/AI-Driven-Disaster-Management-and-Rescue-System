@@ -31,7 +31,10 @@ const GOOGLE_MAP_TYPES = {
   },
 };
 
+const gecGandhinagarCenter = [23.2591, 72.6537];
+
 const PAN_INDIA_FALLBACK_INCIDENTS = [
+  { id: "inc-gec-1", type: "Command Center HQ", location: "Government Engineering College, Sector 28, Gandhinagar", lat: 23.2591, lng: 72.6537, severity: "low", description: "SentinelAI Emergency Command & Rescue Operations Hub.", status: "active" },
   { id: "inc-guj-1", type: "Cyclone Warning", location: "Mandvi Coastal Belt, Kachchh, Gujarat", lat: 22.830, lng: 69.350, severity: "high", description: "Storm surge warning along Mandvi coast.", status: "active" },
   { id: "inc-guj-2", type: "Industrial Gas Leak", location: "Hazira Complex, Surat, Gujarat", lat: 21.170, lng: 72.720, severity: "critical", description: "Chemical containment in progress.", status: "responding" },
   { id: "inc-guj-3", type: "Urban Flood", location: "Sabarmati Riverfront, Ahmedabad, Gujarat", lat: 23.022, lng: 72.571, severity: "moderate", description: "Discharge water monitoring.", status: "active" },
@@ -47,6 +50,7 @@ const PAN_INDIA_FALLBACK_INCIDENTS = [
 ];
 
 const PAN_INDIA_FALLBACK_SENSORS = [
+  { id: "sen-gec-1", type: "air_quality", location: "GEC Campus Sensor - Sector 28, Gandhinagar", lat: 23.2591, lng: 72.6537, unit: "AQI", value: 62.0, status: "normal" },
   { id: "sen-guj-1", type: "seismic", location: "Kachchh Fault Line - Bhuj, Gujarat", lat: 23.250, lng: 69.670, unit: "Richter", value: 3.8, status: "warning" },
   { id: "sen-guj-2", type: "temperature", location: "Gir Forest Sector - Junagadh, Gujarat", lat: 21.124, lng: 70.528, unit: "°C", value: 41.5, status: "normal" },
   { id: "sen-guj-3", type: "air_quality", location: "Hazira Industrial Grid - Surat, Gujarat", lat: 21.170, lng: 72.831, unit: "AQI", value: 285.0, status: "critical" },
@@ -63,7 +67,7 @@ const PAN_INDIA_FALLBACK_SENSORS = [
   { id: "sen-pb-1", type: "water_level", location: "Bhakra Dam Spillway - Punjab", lat: 31.410, lng: 76.430, unit: "m", value: 512.0, status: "normal" },
 ];
 
-function MapInitializer({ incidents, sensors, sos }) {
+function MapInitializer() {
   const map = useMap();
   const fittedRef = useRef(false);
 
@@ -71,20 +75,13 @@ function MapInitializer({ incidents, sensors, sos }) {
     const timer = setTimeout(() => {
       map.invalidateSize();
       if (!fittedRef.current) {
-        const points = [
-          ...incidents.map((i) => [i.lat, i.lng]),
-          ...sensors.map((s) => [s.lat, s.lng]),
-          ...sos.filter((s) => s.status !== "resolved").map((s) => [s.lat, s.lng]),
-        ].filter((p) => p[0] != null && p[1] != null);
-
-        if (points.length > 0) {
-          map.fitBounds(points, { padding: [50, 50], maxZoom: 6 });
-          fittedRef.current = true;
-        }
+        // Focus initially on Government Engineering College, Sector 28, Gandhinagar
+        map.setView(gecGandhinagarCenter, 15);
+        fittedRef.current = true;
       }
     }, 250);
     return () => clearTimeout(timer);
-  }, [map, incidents, sensors, sos]);
+  }, [map]);
   return null;
 }
 
@@ -93,11 +90,17 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
   const [mapType, setMapType] = useState("dark");
   const [mapInstance, setMapInstance] = useState(null);
 
-  // Combine active server points with Pan-India fallback points to guarantee all states (incl. Gujarat) have markers
+  // Combine active server points with Pan-India fallback points to guarantee all states (incl. Gujarat & GEC Gandhinagar) have markers
   const activeIncidents = incidents.length > 0 ? incidents : PAN_INDIA_FALLBACK_INCIDENTS;
   const activeSensors = sensors.length > 0 ? sensors : PAN_INDIA_FALLBACK_SENSORS;
 
   const currentTile = GOOGLE_MAP_TYPES[mapType] || GOOGLE_MAP_TYPES.dark;
+
+  const resetGecGandhinagar = () => {
+    if (mapInstance) {
+      mapInstance.setView(gecGandhinagarCenter, 15);
+    }
+  };
 
   const resetPanIndia = () => {
     if (mapInstance) {
@@ -148,6 +151,13 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
       {/* Layer Control Toolbar Header (Top Right) */}
       <div className="absolute top-3 right-3 z-[1000] flex items-center gap-1 bg-[#0A0D14]/90 backdrop-blur-md p-1.5 rounded-lg border border-white/15 shadow-2xl">
         <button
+          onClick={resetGecGandhinagar}
+          className="px-2.5 py-1 rounded text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-all shadow flex items-center gap-1"
+          title="Focus on Government Engineering College, Gandhinagar"
+        >
+          <span>📍 GEC Gandhinagar</span>
+        </button>
+        <button
           onClick={resetPanIndia}
           className="px-2.5 py-1 rounded text-xs font-semibold bg-emerald-600/90 hover:bg-emerald-500 text-white transition-all shadow flex items-center gap-1"
           title="Zoom to Pan-India view"
@@ -175,8 +185,8 @@ export default function IncidentMap({ incidents = [], sensors = [], sos = [] }) 
         ))}
       </div>
 
-      <MapContainer ref={setMapInstance} center={indiaCenter} zoom={5} zoomControl={false} style={{ height: "100%", width: "100%" }} scrollWheelZoom={true}>
-        <MapInitializer incidents={activeIncidents} sensors={activeSensors} sos={sos} />
+      <MapContainer ref={setMapInstance} center={gecGandhinagarCenter} zoom={15} zoomControl={false} style={{ height: "100%", width: "100%" }} scrollWheelZoom={true}>
+        <MapInitializer />
         <TileLayer
           key={mapType}
           attribution='&copy; <a href="https://maps.google.com" target="_blank" rel="noreferrer">Google Maps</a>'
