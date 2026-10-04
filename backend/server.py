@@ -111,11 +111,16 @@ def require_roles(*roles):
     return checker
 
 
+EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+
+
 @api.post("/auth/register")
 async def register(payload: RegisterIn, response: Response):
+    email = payload.email.lower().strip()
+    if not EMAIL_REGEX.match(email):
+        raise HTTPException(status_code=400, detail="Please enter a valid email address (e.g. user@domain.com)")
     if len(payload.password) < 6:
         raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
-    email = payload.email.lower().strip()
     role = payload.role if payload.role in auth_mod.ROLES else "citizen"
     if role == "admin":
         role = "citizen"
@@ -138,7 +143,9 @@ async def register(payload: RegisterIn, response: Response):
 
 @api.post("/auth/login")
 async def login(payload: LoginIn, response: Response):
-    email = payload.email.lower()
+    email = payload.email.lower().strip()
+    if not EMAIL_REGEX.match(email):
+        raise HTTPException(status_code=400, detail="Please enter a valid email address")
     user = await db.users.find_one({"email": email})
     if not user or not auth_mod.verify_password(payload.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
