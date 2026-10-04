@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ShieldAlert, Loader2, ArrowLeft, Eye, EyeOff, Sparkles, ShieldCheck, User, AlertCircle } from "lucide-react";
+import { ShieldAlert, Loader2, ArrowLeft, Eye, EyeOff, ShieldCheck, User, AlertCircle } from "lucide-react";
 import { useAuth, formatApiError } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,39 +20,6 @@ export default function Login() {
 
   const isEmailValid = !email || EMAIL_REGEX.test(email.trim());
 
-  const suggestStrongPassword = () => {
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=";
-    let pwd = "";
-    pwd += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)];
-    pwd += "abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 26)];
-    pwd += "0123456789"[Math.floor(Math.random() * 10)];
-    pwd += "!@#$%^&*"[Math.floor(Math.random() * 8)];
-    for (let i = 0; i < 10; i++) {
-      pwd += chars[Math.floor(Math.random() * chars.length)];
-    }
-    pwd = pwd.split("").sort(() => 0.5 - Math.random()).join("");
-    setPassword(pwd);
-    setShowPassword(true);
-    navigator.clipboard.writeText(pwd).catch(() => {});
-    toast.success("Strong password suggested & copied to clipboard!");
-  };
-
-  const getStrength = (p) => {
-    if (!p) return { score: 0, label: "", color: "" };
-    let score = 0;
-    if (p.length >= 8) score++;
-    if (/[A-Z]/.test(p) && /[a-z]/.test(p)) score++;
-    if (/[0-9]/.test(p)) score++;
-    if (/[^A-Za-z0-9]/.test(p)) score++;
-
-    if (score <= 1) return { score: 25, label: "Weak", color: "bg-red-500", text: "text-red-400" };
-    if (score === 2) return { score: 50, label: "Fair", color: "bg-amber-500", text: "text-amber-400" };
-    if (score === 3) return { score: 75, label: "Good", color: "bg-blue-500", text: "text-blue-400" };
-    return { score: 100, label: "Strong", color: "bg-emerald-500", text: "text-emerald-400" };
-  };
-
-  const strength = getStrength(password);
-
   const submit = async (e) => {
     e.preventDefault();
     if (!email.trim() || !EMAIL_REGEX.test(email.trim())) {
@@ -65,7 +32,7 @@ export default function Login() {
       toast.success("Access granted");
       navigate("/command");
     } catch (err) {
-      toast.error(formatApiError(err.response?.data?.detail) || "Sign in failed");
+      toast.error(formatApiError(err));
     } finally {
       setLoading(false);
     }
@@ -156,15 +123,6 @@ export default function Login() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <Label className="text-slate-200 font-mono text-xs sm:text-sm uppercase tracking-wider font-semibold">Password</Label>
-                <button
-                  type="button"
-                  onClick={suggestStrongPassword}
-                  className="text-xs text-blue-400 hover:text-blue-300 font-mono flex items-center gap-1 hover:underline focus:outline-none"
-                  data-testid="suggest-password-btn"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Suggest Strong Password</span>
-                </button>
               </div>
 
               <div className="relative">
@@ -188,19 +146,6 @@ export default function Login() {
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
-
-              {/* Password Strength Meter */}
-              {password && (
-                <div className="mt-2.5 space-y-1.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-400">Password Strength:</span>
-                    <span className={`font-semibold ${strength.text}`}>{strength.label}</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                    <div className={`h-full transition-all duration-300 ${strength.color}`} style={{ width: `${strength.score}%` }} />
-                  </div>
-                </div>
-              )}
             </div>
 
             <Button

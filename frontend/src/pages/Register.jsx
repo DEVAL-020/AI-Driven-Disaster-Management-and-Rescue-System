@@ -70,7 +70,7 @@ export default function Register() {
       toast.success("Account registered successfully");
       navigate("/command");
     } catch (err) {
-      toast.error(formatApiError(err.response?.data?.detail) || "Registration failed");
+      toast.error(formatApiError(err));
     } finally {
       setLoading(false);
     }

@@ -26,13 +26,22 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export function formatApiError(detail) {
-  if (detail == null) return "Something went wrong. Please try again.";
-  if (typeof detail === "string") return detail;
-  if (Array.isArray(detail))
-    return detail.map((e) => (e && typeof e.msg === "string" ? e.msg : JSON.stringify(e))).filter(Boolean).join(" ");
-  if (detail && typeof detail.msg === "string") return detail.msg;
-  return String(detail);
+export function formatApiError(err) {
+  if (!err) return "Unable to process request. Please try again.";
+  if (typeof err === "string") return err;
+  if (err.response?.data?.detail) {
+    const d = err.response.data.detail;
+    if (typeof d === "string") return d;
+    if (Array.isArray(d))
+      return d
+        .map((e) => (e && typeof e.msg === "string" ? e.msg : JSON.stringify(e)))
+        .filter(Boolean)
+        .join(" ");
+    if (d && typeof d.msg === "string") return d.msg;
+  }
+  if (err.response?.data?.message) return err.response.data.message;
+  if (err.message) return err.message;
+  return "Authentication failed. Please check your credentials.";
 }
 
 export default api;
