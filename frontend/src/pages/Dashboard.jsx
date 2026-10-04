@@ -52,8 +52,8 @@ function StatCard({ icon: Icon, label, value, color, testid }) {
     <div data-testid={testid} className="bg-[#121824]/90 border border-white/10 rounded-lg p-4 flex items-center gap-3.5 shadow-lg transition-all hover:border-blue-500/30">
       <div className={`w-11 h-11 rounded-lg flex items-center justify-center bg-white/5 ${color}`}><Icon className="w-5 h-5" /></div>
       <div>
-        <div className="font-heading font-bold text-2xl text-slate-900 dark:text-white leading-none">{value}</div>
-        <div className="font-mono text-[9px] uppercase tracking-widest text-slate-500 dark:text-slate-400 mt-1">{label}</div>
+        <div className="font-heading font-bold text-2xl sm:text-3xl text-white leading-none">{value}</div>
+        <div className="font-mono text-xs uppercase tracking-wider text-slate-300 font-medium mt-1">{label}</div>
       </div>
     </div>
   );
@@ -136,14 +136,14 @@ export default function Dashboard() {
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-md bg-blue-600 flex items-center justify-center shrink-0"><ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-white" /></div>
               <div>
                 <div className="font-heading font-bold text-base sm:text-lg tracking-wider uppercase leading-none">Sentinel<span className="text-blue-500">AI</span></div>
-                <div className={`font-mono text-[8px] sm:text-[9px] uppercase tracking-widest ${ROLE_META[role].color}`}>{ROLE_META[role].label}</div>
+                <div className={`font-mono text-xs font-semibold uppercase tracking-wider ${ROLE_META[role].color}`}>{ROLE_META[role].label}</div>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="hidden sm:block text-right">
-              <div className="text-xs sm:text-sm text-white leading-none">{user?.name}</div>
-              <div className="font-mono text-[9px] uppercase tracking-widest text-slate-500 mt-0.5">{user?.email}</div>
+              <div className="text-xs sm:text-sm text-white font-medium leading-none">{user?.name}</div>
+              <div className="font-mono text-xs font-medium uppercase tracking-wider text-slate-300 mt-0.5">{user?.email}</div>
             </div>
             <Button data-testid="logout-btn" onClick={doLogout} variant="outline" size="sm" className="border-red-500/30 bg-red-500/10 text-red-300 hover:bg-red-500/20 hover:border-red-500/50 hover:text-white transition-all text-xs sm:text-sm h-8 sm:h-9 px-2.5 sm:px-3">
               <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5" /><span>Logout</span>
@@ -223,8 +223,8 @@ function NetworkInfo() {
       <div className="space-y-2.5">
         {items.map(([k, v]) => (
           <div key={k} className="flex items-center justify-between border-b border-white/5 pb-2.5">
-            <span className="font-mono text-[10px] uppercase tracking-wider text-slate-500">{k}</span>
-            <span className="font-mono text-xs text-slate-200">{v}</span>
+            <span className="font-mono text-xs uppercase tracking-wider text-slate-300 font-medium">{k}</span>
+            <span className="font-mono text-xs sm:text-sm text-slate-100 font-medium">{v}</span>
           </div>
         ))}
       </div>

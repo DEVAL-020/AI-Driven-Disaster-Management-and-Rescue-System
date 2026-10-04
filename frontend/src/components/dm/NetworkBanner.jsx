@@ -25,18 +25,18 @@ export default function NetworkBanner() {
   ] : [];
 
   return (
-    <div className="bg-[#121824]/90 border border-white/10 rounded-lg px-4 py-3" data-testid="network-topology-status">
-      <div className="flex items-center gap-2 mb-2.5">
-        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="font-mono text-[10px] uppercase tracking-widest text-slate-400">Network Mesh · {s?.protocol || "MQTT/TLS"}</span>
+    <div className="bg-[#121824]/90 border border-white/10 rounded-lg px-4 sm:px-5 py-3.5 sm:py-4 shadow-lg" data-testid="network-topology-status">
+      <div className="flex items-center gap-2 mb-3">
+        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="font-mono text-xs sm:text-sm font-semibold uppercase tracking-widest text-slate-200">Network Mesh · {s?.protocol || "MQTT/TLS 1.3"}</span>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
         {metrics.map((m) => (
-          <div key={m.label} className="flex items-center gap-2.5">
-            <m.icon className={`w-4 h-4 shrink-0 ${m.ok ? "text-cyan-400" : "text-amber-400"}`} />
+          <div key={m.label} className="flex items-center gap-3">
+            <m.icon className={`w-5 h-5 sm:w-6 sm:h-6 shrink-0 ${m.ok ? "text-cyan-400" : "text-amber-400"}`} />
             <div className="min-w-0">
-              <div className="font-mono text-[9px] uppercase tracking-wider text-slate-500">{m.label}</div>
-              <div className="font-mono text-xs text-white truncate">{m.value}</div>
+              <div className="font-mono text-xs font-semibold uppercase tracking-wider text-slate-300 mb-0.5">{m.label}</div>
+              <div className="font-mono text-sm sm:text-base font-bold text-white truncate">{m.value}</div>
             </div>
           </div>
         ))}
