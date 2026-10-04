@@ -1,6 +1,6 @@
 import { Github, ExternalLink } from "lucide-react";
 
-export default function FloatingGithubButton() {
+export default function FloatingGithubButton({ className = "" }) {
   const repoUrl = "https://github.com/DEVAL-020/AI-Driven-Disaster-Management-and-Rescue-System";
 
   return (
@@ -10,7 +10,7 @@ export default function FloatingGithubButton() {
       rel="noopener noreferrer"
       title="View Source Code on GitHub"
       data-testid="floating-github-btn"
-      className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full bg-[#121824]/95 backdrop-blur-md text-white border border-white/20 hover:border-blue-500/60 shadow-2xl hover:shadow-blue-500/20 hover:bg-[#1a2336] transition-all duration-300 hover:scale-105 active:scale-95 group"
+      className={`inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-[#121824]/95 backdrop-blur-md text-white border border-white/20 hover:border-blue-500/60 shadow-lg hover:shadow-blue-500/20 hover:bg-[#1a2336] transition-all duration-300 hover:scale-105 active:scale-95 group ${className}`}
     >
       <div className="relative flex items-center justify-center">
         <Github className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:text-blue-400 transition-colors" />

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
+import FloatingGithubButton from "@/components/dm/FloatingGithubButton";
 import {
   ShieldAlert, Radio, BrainCircuit, Network, Lock, MapPin, ArrowRight, Activity, LogOut, LayoutDashboard,
 } from "lucide-react";
@@ -104,8 +105,13 @@ export default function Landing() {
         </div>
       </section>
 
-      <footer className="border-t border-white/10 py-6 sm:py-8 text-center px-4">
-        <p className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-slate-500">SentinelAI · Computer Networks PBL · Disaster Management & Rescue System</p>
+      <footer className="border-t border-white/10 py-6 sm:py-8 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-slate-500 text-center sm:text-left">
+            SentinelAI · Computer Networks PBL · Disaster Management & Rescue System
+          </p>
+          <FloatingGithubButton />
+        </div>
       </footer>
     </div>
   );
