@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "create-react-app",
-  "installCommand": "npm install --legacy-peer-deps",
-  "buildCommand": "CI=false npm run build",
+  "installCommand": "cd frontend && npm install --legacy-peer-deps",
+  "buildCommand": "cd frontend && CI=false npm run build",
   "outputDirectory": "frontend/build",
   "functions": {
     "api/index.py": { "maxDuration": 30 }
