@@ -25,18 +25,20 @@ export default function NetworkBanner() {
   ] : [];
 
   return (
-    <div className="bg-[#121824]/90 border border-white/10 rounded-lg px-4 sm:px-5 py-3.5 sm:py-4 shadow-lg" data-testid="network-topology-status">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="font-mono text-xs sm:text-sm font-semibold uppercase tracking-widest text-slate-200">Network Mesh · {s?.protocol || "MQTT/TLS 1.3"}</span>
+    <div className="bg-[#121824]/90 border border-white/10 rounded-lg p-3 sm:p-4 lg:p-5 shadow-lg" data-testid="network-topology-status">
+      <div className="flex items-center gap-2 mb-3 flex-wrap">
+        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+        <span className="font-mono text-xs sm:text-sm font-semibold uppercase tracking-widest text-slate-200">
+          Network Mesh · {s?.protocol || "MQTT/TLS 1.3"}
+        </span>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
+      <div className="grid grid-cols-2 xs:grid-cols-3 lg:grid-cols-6 gap-2 xs:gap-3 sm:gap-4">
         {metrics.map((m) => (
-          <div key={m.label} className="flex items-center gap-3">
-            <m.icon className={`w-5 h-5 sm:w-6 sm:h-6 shrink-0 ${m.ok ? "text-cyan-400" : "text-amber-400"}`} />
-            <div className="min-w-0">
-              <div className="font-mono text-xs font-semibold uppercase tracking-wider text-slate-300 mb-0.5">{m.label}</div>
-              <div className="font-mono text-sm sm:text-base font-bold text-white truncate">{m.value}</div>
+          <div key={m.label} className="flex items-center gap-2 xs:gap-2.5 min-w-0 bg-[#0A0D14]/60 border border-white/5 rounded-md p-2 xs:p-2.5 sm:p-3">
+            <m.icon className={`w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 shrink-0 ${m.ok ? "text-cyan-400" : "text-amber-400"}`} />
+            <div className="min-w-0 flex-1">
+              <div className="font-mono text-[10px] xs:text-xs font-semibold uppercase tracking-wider text-slate-300 truncate">{m.label}</div>
+              <div className="font-mono text-xs xs:text-sm sm:text-base font-bold text-white break-words leading-tight">{m.value}</div>
             </div>
           </div>
         ))}

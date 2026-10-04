@@ -120,39 +120,39 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-[#0A0D14] text-slate-100 overflow-x-hidden">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-[#0A0D14]/85 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-[1600px] mx-auto px-3.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 sm:gap-3">
+      <header className="sticky top-0 z-40 bg-[#0A0D14]/90 backdrop-blur-md border-b border-white/10">
+        <div className="max-w-[1600px] mx-auto px-2.5 xs:px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-3 min-w-0">
             <button
               onClick={() => navigate("/")}
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-mono uppercase tracking-wider transition-all"
+              className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-mono uppercase tracking-wider transition-all shrink-0"
               title="Return to Home Page"
               data-testid="dashboard-back-home-btn"
             >
               <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400" />
-              <span className="hidden sm:inline">Back</span>
+              <span className="hidden xs:inline">Back</span>
             </button>
-            <div className="flex items-center gap-2 sm:gap-3" data-testid="navbar-brand-logo">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-md bg-blue-600 flex items-center justify-center shrink-0"><ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-white" /></div>
-              <div>
-                <div className="font-heading font-bold text-base sm:text-lg tracking-wider uppercase leading-none">Sentinel<span className="text-blue-500">AI</span></div>
-                <div className={`font-mono text-xs font-semibold uppercase tracking-wider ${ROLE_META[role].color}`}>{ROLE_META[role].label}</div>
+            <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-3 min-w-0" data-testid="navbar-brand-logo">
+              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-md bg-blue-600 flex items-center justify-center shrink-0"><ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-white" /></div>
+              <div className="min-w-0">
+                <div className="font-heading font-bold text-xs xs:text-sm sm:text-lg tracking-wider uppercase leading-none truncate">Sentinel<span className="text-blue-500">AI</span></div>
+                <div className={`font-mono text-[9px] xs:text-[10px] sm:text-xs font-semibold uppercase tracking-wider truncate ${ROLE_META[role].color}`}>{ROLE_META[role].label}</div>
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden sm:block text-right">
+          <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-3 shrink-0">
+            <div className="hidden lg:block text-right">
               <div className="text-xs sm:text-sm text-white font-medium leading-none">{user?.name}</div>
               <div className="font-mono text-xs font-medium uppercase tracking-wider text-slate-300 mt-0.5">{user?.email}</div>
             </div>
-            <Button data-testid="logout-btn" onClick={doLogout} variant="outline" size="sm" className="border-red-500/30 bg-red-500/10 text-red-300 hover:bg-red-500/20 hover:border-red-500/50 hover:text-white transition-all text-xs sm:text-sm h-8 sm:h-9 px-2.5 sm:px-3">
-              <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5" /><span>Logout</span>
+            <Button data-testid="logout-btn" onClick={doLogout} variant="outline" size="sm" className="border-red-500/30 bg-red-500/10 text-red-300 hover:bg-red-500/20 hover:border-red-500/50 hover:text-white transition-all text-xs sm:text-sm h-8 sm:h-9 px-2 xs:px-2.5 sm:px-3">
+              <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4 sm:mr-1.5" /><span className="hidden xs:inline">Logout</span>
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-[1600px] mx-auto px-3.5 sm:px-6 py-3.5 sm:py-5 space-y-4 sm:space-y-5">
+      <main className="max-w-[1600px] mx-auto px-2.5 xs:px-4 sm:px-6 py-3 sm:py-5 space-y-3.5 sm:space-y-5">
         <NetworkBanner />
 
         <div className="flex gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar" data-testid="role-switcher-tabs">
@@ -169,7 +169,7 @@ export default function Dashboard() {
         <motion.div key={tab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
           {tab === "overview" && (
             <div className="space-y-4 sm:space-y-5">
-              <div className={`grid grid-cols-2 ${role === "citizen" ? "sm:grid-cols-3" : "sm:grid-cols-3 lg:grid-cols-6"} gap-2.5 sm:gap-3`}>
+              <div className={`grid grid-cols-1 xs:grid-cols-2 ${role === "citizen" ? "sm:grid-cols-3" : "sm:grid-cols-3 lg:grid-cols-6"} gap-2.5 sm:gap-3`}>
                 {statCards.map((s) => <StatCard key={s.label} {...s} />)}
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
