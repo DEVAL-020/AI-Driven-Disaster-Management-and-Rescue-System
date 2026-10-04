@@ -116,44 +116,61 @@ EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
 
 @api.post("/auth/register")
 async def register(payload: RegisterIn, response: Response):
-    email = payload.email.lower().strip()
-    if not EMAIL_REGEX.match(email):
-        raise HTTPException(status_code=400, detail="Please enter a valid email address (e.g. user@domain.com)")
-    if len(payload.password) < 6:
-        raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
-    role = payload.role if payload.role in auth_mod.ROLES else "citizen"
-    if role == "admin":
-        role = "citizen"
-    if await db.users.find_one({"email": email}):
-        raise HTTPException(status_code=400, detail="Email already registered")
-    doc = {
-        "name": payload.name.strip(),
-        "email": email,
-        "password_hash": auth_mod.hash_password(payload.password),
-        "role": role,
-        "created_at": now_iso(),
-    }
-    res = await db.users.insert_one(doc)
-    uid = str(res.inserted_id)
-    at = auth_mod.create_access_token(uid, email, role)
-    rt = auth_mod.create_refresh_token(uid)
-    auth_mod.set_auth_cookies(response, at, rt)
-    return {"id": uid, "name": payload.name, "email": email, "role": role, "token": at}
+    try:
+        email = payload.email.lower().strip()
+        if not EMAIL_REGEX.match(email):
+            raise HTTPException(status_code=400, detail="Please enter a valid email address (e.g. user@domain.com)")
+        if len(payload.password) < 6:
+            raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
+        role = payload.role if payload.role in auth_mod.ROLES else "citizen"
+        if role == "admin":
+            role = "citizen"
+        if await db.users.find_one({"email": email}):
+            raise HTTPException(status_code=400, detail="This email is already registered. Please sign in instead.")
+        doc = {
+            "name": payload.name.strip(),
+            "email": email,
+            "password_hash": auth_mod.hash_password(payload.password),
+            "role": role,
+            "created_at": now_iso(),
+        }
+        res = await db.users.insert_one(doc)
+        uid = str(res.inserted_id)
+        at = auth_mod.create_access_token(uid, email, role)
+        rt = auth_mod.create_refresh_token(uid)
+        auth_mod.set_auth_cookies(response, at, rt)
+        return {"id": uid, "name": payload.name.strip(), "email": email, "role": role, "token": at}
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Registration failed: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Registration error: {str(exc)}")
 
 
 @api.post("/auth/login")
 async def login(payload: LoginIn, response: Response):
-    email = payload.email.lower().strip()
-    if not EMAIL_REGEX.match(email):
-        raise HTTPException(status_code=400, detail="Please enter a valid email address")
-    user = await db.users.find_one({"email": email})
-    if not user or not auth_mod.verify_password(payload.password, user["password_hash"]):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
-    uid = str(user["_id"])
-    at = auth_mod.create_access_token(uid, email, user["role"])
-    rt = auth_mod.create_refresh_token(uid)
-    auth_mod.set_auth_cookies(response, at, rt)
-    return {"id": uid, "name": user["name"], "email": email, "role": user["role"], "token": at}
+    try:
+        email = payload.email.lower().strip()
+        if not EMAIL_REGEX.match(email):
+            raise HTTPException(status_code=400, detail="Please enter a valid email address")
+        user = await db.users.find_one({"email": email})
+        if not user:
+            raise HTTPException(status_code=401, detail="Account not found with this email. Please register first.")
+        pwd_hash = user.get("password_hash")
+        if not pwd_hash or not auth_mod.verify_password(payload.password, pwd_hash):
+            raise HTTPException(status_code=401, detail="Incorrect password. Please try again.")
+        uid = str(user["_id"])
+        user_role = user.get("role", "citizen")
+        user_name = user.get("name", "User")
+        at = auth_mod.create_access_token(uid, email, user_role)
+        rt = auth_mod.create_refresh_token(uid)
+        auth_mod.set_auth_cookies(response, at, rt)
+        return {"id": uid, "name": user_name, "email": email, "role": user_role, "token": at}
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Login failed: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Authentication error: {str(exc)}")
 
 
 @api.post("/auth/logout")
