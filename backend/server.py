@@ -6,6 +6,7 @@ load_dotenv(ROOT_DIR / ".env")
 
 import os
 import random
+import re
 import logging
 from datetime import datetime, timezone, timedelta
 from typing import Optional
@@ -23,7 +24,7 @@ import ai_service
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("disaster-api")
 
-mongo_url = os.environ.get("MONGO_URL", "mongodb://localhost:27017")
+mongo_url = os.environ["MONGO_URL"]
 client = AsyncIOMotorClient(mongo_url, serverSelectionTimeoutMS=8000)
 db = client[os.environ.get("DB_NAME", "disaster_command")]
 

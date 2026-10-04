@@ -2,13 +2,15 @@ import axios from "axios";
 
 const getBaseUrl = () => {
   const envUrl = process.env.REACT_APP_BACKEND_URL;
+  console.log("envUrl", envUrl);
+
   if (envUrl && envUrl.startsWith("http") && !envUrl.includes("localhost")) {
     return envUrl.replace(/\/$/, "");
   }
   if (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
     return "";
   }
-  return envUrl ? envUrl.replace(/\/$/, "") : "http://localhost:8001";
+  return envUrl ? envUrl.replace(/\/$/, "") : "http://localhost:8000";
 };
 
 const BASE = getBaseUrl();

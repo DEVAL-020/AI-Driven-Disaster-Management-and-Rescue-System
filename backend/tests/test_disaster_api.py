@@ -2,7 +2,10 @@ import os
 import requests
 import pytest
 
-BASE_URL = os.environ.get("API_BASE_URL", os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001")).rstrip("/")
+BASE_URL = os.environ.get("API_BASE_URL") or os.environ.get("REACT_APP_BACKEND_URL")
+if not BASE_URL:
+    raise ValueError("API_BASE_URL or REACT_APP_BACKEND_URL environment variable must be set")
+BASE_URL = BASE_URL.rstrip("/")
 API = f"{BASE_URL}/api"
 
 ADMIN = ("admin@rescue.io", "admin123")
